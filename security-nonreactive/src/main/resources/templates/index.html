@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Home</title>
+    </head>
+    <body>
+        <p th:text="#{welcome.text(${name})}">Welcome anonymous</p>
+        <div th:if="${info}">
+            <span th:text="#{${info}}"></span>
+        </div>
+        <hr/>
+        <form method="post" action="/logout">
+            <input type="submit" value="logout" th:value="#{logout.btn}"/>
+        </form>
+        <hr/>
+        <div>
+            <span th:text="#{email.login}">email login:</span> <a href="/form-login" th:text="#{login.btn}">login</a> / <a href="/sign-up" th:text="#{signup.btn}">sign up</a>
+        </div>
+        <div th:if="${#lists.contains(registeredClients, 'Facebook')}">
+            <span th:text="#{facebook.btn}">with facebook:</span> <a href="/login/facebook" th:text="#{clickhere.btn}">click here</a>
+        </div>
+        <div th:if="${#lists.contains(registeredClients, 'GitHub')}">
+            <span th:text="#{github.btn}">with Github:</span> <a href="/login/github" th:text="#{clickhere.btn}">click here</a>
+        </div>
+        <div th:if="${#lists.contains(registeredClients, 'Google')}">
+            <span th:text="#{google.btn}">with Google:</span> <a href="/login/google" th:text="#{clickhere.btn}">click here</a>
+        </div>
+        <div th:if="${#lists.contains(registeredClients, 'LinkedIn')}">
+            <span th:text="#{linkedin.btn}">with LinkedIn:</span> <a href="/login/linkedIn" th:text="#{clickhere.btn}">click here</a>
+        </div>
+        <div th:if="${#lists.contains(registeredClients, 'Twitter')}">
+            <span th:text="#{twitter.btn}">with Twitter:</span> <a href="/login/twitter" th:text="#{clickhere.btn}">click here</a>
+        </div>
+    </body>
+</html>

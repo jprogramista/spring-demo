@@ -1,0 +1,27 @@
+Setup DB:
+CREATE DATABASE springDemoDb;
+CREATE USER 'springdemo'@'localhost' IDENTIFIED BY 'springdemopass';
+GRANT ALL PRIVILEGES ON springDemoDb.* TO 'springdemo'@'localhost';
+
+How to run:
+1. create e.g. DEV profile with overwritten things (OAuth client data required)
+2. mvn spring-boot:run -Dspring-boot.run.profiles=DEV
+
+Endpoints:
+http -a admin:password :8080/users/data
+
+HATEOAS:
+Hal Browser: http://localhost:8080/api/browser/index.html#/api
+
+HTTPie:
+http -a admin:password :8080/api
+
+http -a admin:password :8080/api/details?user=1
+http -a admin:password :8080/api/details/search/findByUserId?user=1
+
+# for relations we can follow https://www.baeldung.com/spring-data-rest-relationships
+http -a admin:adminsecret --print=BbHh POST :8080/api/details name='detail' value='just test'
+# should be returned http://localhost:8080/api/details/4/user then:
+curl -i -X PUT -H "Content-Type:text/uri-list" -u admin:adminsecret -d "http://localhost:8080/api/users/1" http://localhost:8080/api/details/4/user
+
+// TODO CSRF, CORS, exceptions during signup translated to human friendly, Twitter OAuth, test coverage

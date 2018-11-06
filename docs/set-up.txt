@@ -3,10 +3,21 @@ CREATE DATABASE springDemoDb;
 CREATE USER 'springdemo'@'localhost' IDENTIFIED BY 'springdemopass';
 GRANT ALL PRIVILEGES ON springDemoDb.* TO 'springdemo'@'localhost';
 
+CREATE DATABASE activationDemoDb;
+GRANT ALL PRIVILEGES ON activationDemoDb.* TO 'springdemo'@'localhost';
+
+FLUSH PRIVILEGES;
+
+# spring-nonreactive
 How to run:
 1. create e.g. DEV profile with overwritten things (OAuth client data required)
 2. mvn spring-boot:run -Dspring-boot.run.profiles=DEV
 
+# async-queue-service
+1. RabbitMQ default setup with guest:guest credentials (management page: http://localhost:15672/)
+
+------------------------------------------------------------------------------------------------------------------------
+# spring-nonreactive
 Endpoints:
 http -a admin:password :8080/users/data
 
@@ -22,6 +33,11 @@ http -a admin:password :8080/api/details/search/findByUserId?user=1
 # for relations we can follow https://www.baeldung.com/spring-data-rest-relationships
 http -a admin:adminsecret --print=BbHh POST :8080/api/details name='detail' value='just test'
 # should be returned http://localhost:8080/api/details/4/user then:
-curl -i -X PUT -H "Content-Type:text/uri-list" -u admin:adminsecret -d "http://localhost:8080/api/users/1" http://localhost:8080/api/details/4/user
+curl -i -X PUT -H "Content-Type:text/uri-list" -u admin:adminsecret -d "http://localhost:8080/api/users/1" \
+http://localhost:8080/api/details/4/user
 
 // TODO CSRF, CORS, exceptions during signup translated to human friendly, Twitter OAuth, test coverage
+
+# async-queue-service
+http POST :8081/activation-email userId=2 email=test@example.com
+http POST :8081/activate userId==2 token==a6ea9b34-8ac8-45cf-8e2d-228e7319d1e8

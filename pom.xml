@@ -16,7 +16,8 @@
 
 	<modules>
 		<module>security-nonreactive</module>
-	</modules>
+        <module>async-queue-service</module>
+    </modules>
 	<packaging>pom</packaging>
 
 	<name>demo</name>

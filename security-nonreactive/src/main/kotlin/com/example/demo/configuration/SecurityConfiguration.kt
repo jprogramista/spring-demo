@@ -80,7 +80,7 @@ class SecurityConfiguration(private val dataSource: DataSource,
                 .antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/api/**").hasRole("ADMIN")
-                .antMatchers("/", "/favicon.ico", "/login**", "/error**", "/sign-up")
+                .antMatchers("/", "/favicon.ico", "/login**", "/error**", "/sign-up", "/activate")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

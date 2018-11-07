@@ -1,6 +1,7 @@
 Setup DB:
 CREATE DATABASE springDemoDb;
 CREATE USER 'springdemo'@'localhost' IDENTIFIED BY 'springdemopass';
+# for connector 8.0+ ALTER USER 'springdemo'@'localhost' IDENTIFIED WITH mysql_native_password BY 'springdemopass';
 GRANT ALL PRIVILEGES ON springDemoDb.* TO 'springdemo'@'localhost';
 
 CREATE DATABASE activationDemoDb;

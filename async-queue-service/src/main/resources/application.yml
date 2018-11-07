@@ -22,3 +22,13 @@ spring:
         ddl-auto: update
     generate-ddl: true
 
+mailSender:
+  host: "smtp.gmail.com"
+  port: 587
+  username:
+  password:
+  props:
+    mail.transport.protocol: "smtp"
+    mail.smtp.auth: "true"
+    mail.smtp.starttls.enable: "true"
+    mail.debug: "true"

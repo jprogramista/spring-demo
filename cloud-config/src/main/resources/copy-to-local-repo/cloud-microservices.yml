@@ -1,0 +1,18 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discUser:discPassword@localhost:9000/eureka
+
+ribbon:
+  eureka:
+    enabled: true
+
+micro1-app:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule
+
+spring:
+  redis:
+    host: localhost
+    port: 6379
+

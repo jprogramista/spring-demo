@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: zuul-api-gateway
+  redis:
+    host: localhost
+    port: 6379
+
+server:
+  port: 9001
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discUser:discPassword@localhost:9000/eureka/
+
+zuul:
+  routes:
+    discovery:
+      path: /discovery/**
+      sensitive-headers: Set-Cookie,Authorization
+      url: http://localhost:9000
+    micro1-app:
+      path: /micro1-app/**
+      sensitive-headers: Set-Cookie,Authorization
+    micro2-app:
+      path: /micro2-app/**
+      sensitive-headers: Set-Cookie,Authorization
+
+hystrix:
+  command:
+    discovery:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 600000
+    micro1-app:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 600000
+    micro2-app:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 600000
+

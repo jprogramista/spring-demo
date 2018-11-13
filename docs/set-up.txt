@@ -42,3 +42,33 @@ http://localhost:8080/api/details/4/user
 # async-queue-service
 http POST :8081/activation-email userId=2 email=test@example.com
 http POST :8081/activate userId==2 token==a6ea9b34-8ac8-45cf-8e2d-228e7319d1e8
+
+# cloud-*
+$ cp cloud-config/src/main/resources/copy-to-local-repo/* ~/out/local-config-repo/
+$ cd ~/out/local-config-repo/
+$ git init
+$ git add -A
+$ git commit -m "default configuration"
+mvn -pl cloud-config clean package && java -jar cloud-config/target/cloud-config-0.0.1-SNAPSHOT.jar
+
+# JDK 10
+mvn -pl cloud-eureka clean package && java --add-modules java.xml.bind -jar cloud-eureka/target/cloud-setup-eureka-0.0.1-SNAPSHOT.jar
+
+mvn -pl cloud-zuul clean package && java -jar cloud-zuul/target/cloud-zuul-0.0.1-SNAPSHOT.jar
+
+mvn -pl cloud-microservices clean package && java -Dspring.profiles.active=micro1 -Dserver.port=8081 -jar cloud-microservices/target/cloud-microservices-0.0.1-SNAPSHOT.jar
+java -Dspring.profiles.active=micro1 -Dserver.port=8082 -jar cloud-microservices/target/cloud-microservices-0.0.1-SNAPSHOT.jar
+java -Dspring.profiles.active=micro2 -Dserver.port=8091 -jar cloud-microservices/target/cloud-microservices-0.0.1-SNAPSHOT.jar
+java -Dspring.profiles.active=micro2 -Dserver.port=8092 -jar cloud-microservices/target/cloud-microservices-0.0.1-SNAPSHOT.jar
+
+http http://localhost:9001/micro2-app/micro2
+
+# vault
+$ brew install vault
+$ vault server --dev --dev-root-token-id="00000000-0000-0000-0000-000000000000"
+$ export export VAULT_TOKEN="00000000-0000-0000-0000-000000000000"
+$ export VAULT_ADDR="http://127.0.0.1:8200"
+$ vault kv put secret/cloud-microservices/micro2 vault.username=vaultUser vault.password=vaultPassword
+
+testing:
+kv2: http http://localhost:8200/v1/secret/data/micro2-app/micro2 X-Vault-Token:00000000-0000-0000-0000-000000000000

@@ -17,6 +17,10 @@
 	<modules>
 		<module>security-nonreactive</module>
         <module>async-queue-service</module>
+        <module>cloud-microservices</module>
+		<module>cloud-eureka</module>
+		<module>cloud-zuul</module>
+        <module>cloud-config</module>
     </modules>
 	<packaging>pom</packaging>
 

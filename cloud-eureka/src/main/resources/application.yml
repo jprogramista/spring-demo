@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: discovery
+  redis:
+    host: localhost
+    port: 6379
+
+server:
+  port: 9000
+
+eureka.instance.hostname: localhost
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    service-url:
+      defaultZone: http://discUser:discPassword@localhost:${server.port}/eureka
+
+

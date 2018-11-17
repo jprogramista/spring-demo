@@ -21,6 +21,7 @@
 		<module>cloud-eureka</module>
 		<module>cloud-zuul</module>
         <module>cloud-config</module>
+        <module>jpa-thymeleaf</module>
     </modules>
 	<packaging>pom</packaging>
 

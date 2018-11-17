@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create / Update Employee</title>
+    <style>
+        div.fieldError {
+            color: red;
+        }
+        input.fieldError {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div th:include="fragments/navigation :: top"></div>
+    <h1>Create / Update Employee:</h1>
+    <form th:action="@{/user/save}" method="post" th:object="${userDto}">
+        <ul>
+            <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+                <span th:text="${e.global}? '*' : ${#messages.msg('label.' + e.fieldName)}">The field name</span>:
+                <span th:text="${e.message}">The error message</span>
+            </li>
+        </ul>
+        <input type="hidden" th:field="*{id}">
+
+        <div><label th:text="#{label.email}"/>:<input type="text" placeholder="Email" th:field="*{email}" th:errorclass="fieldError" /></div>
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError"></div>
+
+        <div><label th:text="#{label.password}"/>:<input type="password" placeholder="Password" th:field="*{password}" th:errorclass="fieldError" /></div>
+        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError"></div>
+
+        <div><label th:text="#{label.confirmPassword}"/>:<input type="password" placeholder="Confirm Password" th:field="*{confirmPassword}" th:errorclass="fieldError" /></div>
+        <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="fieldError"></div>
+
+        <div><label th:text="#{label.division}"/>:<input type="text" placeholder="Division" th:field="*{division}" th:errorclass="fieldError" /></div>
+        <div th:if="${#fields.hasErrors('division')}" th:errors="*{division}" class="fieldError"></div>
+
+        <div><label th:text="#{label.address.streetFirstLine}"/>:<input type="text" placeholder="Street 1" th:field="*{address.streetFirstLine}" /></div>
+        <div><label th:text="#{label.address.streetSecondaryLine}"/>:<input type="text" placeholder="Street 2" th:field="*{address.streetSecondaryLine}" /></div>
+        <div><label th:text="#{label.address.postalCode}"/>:<input type="text" placeholder="Postal Code" th:field="*{address.postalCode}" /></div>
+        <div><label th:text="#{label.address.city}"/>:<input type="text" placeholder="City" th:field="*{address.city}" /></div>
+        <div>
+            <label th:text="#{label.address.country}"/>:
+            <select th:field="*{address.country}">
+                <option value=""></option>
+                <option th:each="country : ${countries}" th:value="${country.abbr}" th:text="${country.name}" th:selected="${address} and ${country.abbr} == ${address.country}"></option>
+            </select>
+        </div>
+        <div>
+            <label th:text="#{label.roles}"/>:
+            <select th:field="*{roles}" multiple th:with="userRoles=*{roles}">
+                <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name}" th:selected="${userRoles} and ${#lists.contains(userRoles, role.id)}"></option>
+            </select>
+        </div>
+        <input type="submit" value="Create" />
+    </form>
+
+    <div th:include="fragments/footer :: copy"></div>
+</body>
+</html>

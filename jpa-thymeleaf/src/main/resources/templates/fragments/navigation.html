@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation</title>
+</head>
+<body>
+<div th:fragment="top">
+    <a href="#" th:href="@{/user/list/all}">List all employees</a> |
+    <a href="#" th:href="@{/user/create}">Create new employee</a>
+</div>
+</body>
+</html>

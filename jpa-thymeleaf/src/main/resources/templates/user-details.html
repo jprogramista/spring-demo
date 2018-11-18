@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Details</title>
+</head>
+<body>
+    <div th:include="fragments/navigation :: top"></div>
+
+    <h1>User Details:</h1>
+    <th:block th:object="${user}">
+        <div th:text="#{label.email} + ': ' + *{email}"></div>
+        <div th:text="#{label.division} + ': ' + *{division}"></div>
+        <th:block th:if="*{address != null}">
+        <div th:text="#{label.address.streetFirstLine} + ': ' + *{address.streetFirstLine}"></div>
+        <div th:text="#{label.address.streetSecondaryLine} + ': ' + *{address.streetSecondaryLine}"></div>
+        <div th:text="#{label.address.postalCode} + ': ' + *{address.postalCode}"></div>
+        <div th:text="#{label.address.city} + ': ' + *{address.city}"></div>
+        <div th:text="#{label.address.country} + ': ' + (*{address.country != null} ? *{address.country.name} : '')"></div>
+        </th:block>
+        <div>
+            <span th:text="#{label.roles} + ': '"></span>
+            <ul th:each="role: *{roles}" th:if="*{roles != null}">
+                <li th:text="${role.name}"></li>
+            </ul>
+        </div>
+
+        <div th:if="*{jobHistory != null} and not *{#lists.isEmpty(jobHistory)}">
+            <span th:text="#{label.jobHistory} + ': '"></span>
+            <ul th:each="jobHistoryElem: *{jobHistory}">
+                <li>
+                    <span th:text="${jobHistoryElem.name}">Name</span> : <span th:text="${jobHistoryElem.description} ?: ''">Description</span>
+                </li>
+            </ul>
+        </div>
+
+    </th:block>
+
+    <form method="post" th:action="@{/user/add/job}" th:object="${jobHistoryDto}">
+        <input type="hidden" th:field="*{userId}" />
+        <div><input type="text" th:field="*{name}" placeholder="Name"></div>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError"></div>
+        <div><textarea th:field="*{description}" placeholder="Description"></textarea></div>
+        <div><input type="submit" value="Create" /></div>
+    </form>
+    <div th:include="fragments/footer :: copy"></div>
+</body>
+</html>

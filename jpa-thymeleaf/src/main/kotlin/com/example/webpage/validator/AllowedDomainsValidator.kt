@@ -20,7 +20,7 @@ class AllowedDomainsValidator : ConstraintValidator<AllowedDomainsOnly, String> 
         return value?.let {
             val parts = it.split("@")
             return if (parts.size == 2) {
-                allowedDomains.contains(parts[1])
+                allowedDomains.contains(parts[1].toLowerCase())
             } else {
                 // skip validation
                 true

@@ -7,10 +7,18 @@ import org.springframework.stereotype.Service
 interface RoleService {
     fun findAll() : List<Role>
     fun getRole(id: Long): Role?
+    fun getRoles(ids: List<Long>): List<Role>?
 }
 
 @Service
 class JpaRoleService(val roleRepository: RoleRepository) : RoleService {
+    override fun getRoles(ids: List<Long>): List<Role>? {
+        return if (ids.isEmpty()) {
+            listOf()
+        } else {
+            roleRepository.findByIdIn(ids)
+        }
+    }
 
     override fun getRole(id: Long): Role? {
         return roleRepository.findById(id).orElse(null)

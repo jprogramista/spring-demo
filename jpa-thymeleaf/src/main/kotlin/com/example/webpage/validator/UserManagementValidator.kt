@@ -9,12 +9,14 @@ class UserManagementValidator(val userManagementFacade: UserManagementFacade) : 
 
     override fun validate(target: Any, errors: Errors) {
         val userDto = target as CreateUserDto
-        if (userDto.password != userDto.confirmPassword) {
+        if (userDto.password != null && userDto.password != userDto.confirmPassword) {
             errors.rejectValue("password", "error.passAndConfirm")
         }
 
         userDto.address?.country?.let {
-            userManagementFacade.getCountry(it) ?: errors.rejectValue("address.country", "error.notKnownCountry")
+            if (it.isNotBlank()) {
+                userManagementFacade.getCountry(it) ?: errors.rejectValue("address.country", "error.notKnownCountry")
+            }
         }
 
         userDto.roles?.forEach {
@@ -23,6 +25,7 @@ class UserManagementValidator(val userManagementFacade: UserManagementFacade) : 
     }
 
     override fun supports(clazz: Class<*>): Boolean {
-        return CreateUserDto::class.java.isAssignableFrom(clazz)
+        val assignableFrom = CreateUserDto::class.java.isAssignableFrom(clazz)
+        return assignableFrom
     }
 }

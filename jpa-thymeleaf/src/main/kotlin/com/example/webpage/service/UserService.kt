@@ -10,4 +10,6 @@ interface UserService {
     fun save(user: User)
 
     fun findEmployeeById(userId: Long): Employee?
+
+    fun delete(id: Long)
 }

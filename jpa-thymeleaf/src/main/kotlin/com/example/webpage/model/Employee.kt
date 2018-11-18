@@ -22,4 +22,12 @@ class Employee(email: String, password: String,
 
         return employee
     }
+
+    fun copy(newJobHistory: List<JobHistory>?) : Employee {
+        val employee = Employee(email, password, division, address, roles, newJobHistory ?: jobHistory)
+        employee.id = id
+        employee.createdAt = createdAt
+
+        return employee
+    }
 }

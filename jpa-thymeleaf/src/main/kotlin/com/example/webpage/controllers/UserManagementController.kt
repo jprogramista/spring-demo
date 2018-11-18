@@ -1,5 +1,6 @@
 package com.example.webpage.controllers
 
+import com.example.webpage.dto.AddJobHistoryDto
 import com.example.webpage.dto.CreateUserDto
 import com.example.webpage.facade.UserManagementFacade
 import com.example.webpage.validator.UserManagementValidator
@@ -19,7 +20,7 @@ class UserManagementController(private val userManagementFacade: UserManagementF
 
     val logger = LoggerFactory.getLogger(UserManagementController::class.java)
 
-    @InitBinder
+    @InitBinder("userDto")
     fun addUserManagementValidator(webDataBinder: WebDataBinder) {
         webDataBinder.addValidators(UserManagementValidator(userManagementFacade))
     }
@@ -54,22 +55,39 @@ class UserManagementController(private val userManagementFacade: UserManagementF
             return "create-update-user"
         }
 
+        userManagementFacade.save(createUserDto)
+
         return "redirect:/user/list/all"
     }
 
     @GetMapping(value = ["/list/all"])
     fun listUsers(model: Model) : String {
+        // TODO: should be dto
         model.addAttribute("users", userManagementFacade.getAllEmployees())
         return "list-users"
     }
 
     @GetMapping(value = ["/list/{id}"])
-    fun showUsers(@PathVariable("id") id: Long, model: Model) : String {
+    fun showUser(@PathVariable("id") id: Long, model: Model) : String {
+        // TODO: should be dto
+        model.addAttribute("user", userManagementFacade.getEmployee(id))
+        model.addAttribute("jobHistoryDto", AddJobHistoryDto(userId = id))
         return "user-details"
+    }
+
+    @PostMapping(value = ["/add/job"])
+    fun addJob(@Valid @ModelAttribute("jobHistoryDto") addJobHistoryDto: AddJobHistoryDto, bindingResult: BindingResult, model: Model) : String {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userManagementFacade.getEmployee(addJobHistoryDto.userId!!))
+            return "user-details"
+        }
+        userManagementFacade.addJob(addJobHistoryDto)
+        return "redirect:/user/list/" + addJobHistoryDto.userId
     }
 
     @GetMapping(value = ["/delete/{id}"])
     fun deleteUser(@PathVariable("id") id: Long) : String {
+        userManagementFacade.deleteUser(id)
         return "redirect:/user/list/all"
     }
 }

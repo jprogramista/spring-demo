@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service
 @Service
 class JpaUserService(val userRepository: UserRepository, val employeeRepository: EmployeeRepository) : UserService {
 
+    override fun delete(id: Long) {
+        userRepository.deleteById(id)
+    }
+
     override fun findEmployeeById(userId: Long): Employee? {
         return employeeRepository.findById(userId).orElse(null)
     }

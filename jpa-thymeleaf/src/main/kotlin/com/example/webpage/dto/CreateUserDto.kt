@@ -6,6 +6,7 @@ import com.example.webpage.validator.AllowedDomainsOnly
 import javax.validation.constraints.Email
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Size
 
 data class JobHistoryDto(var id: Long? = null, var name: String? = null, var description: String? = null)
 
@@ -19,9 +20,8 @@ data class CreateUserDto(var id: Long? = null,
                          @field:NotBlank @field:Email
                          @field:AllowedDomainsOnly
                          var email: String? = null,
-                         @field:Min(6)
+                         @field:NotBlank @field:Size(min = 6, max = 20)
                          var password: String? = null,
-                         @field:Min(6)
                          var confirmPassword: String? = null,
                          @field:NotBlank
                          var division: String? = null,
